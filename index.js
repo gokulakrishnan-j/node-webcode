@@ -1,4 +1,4 @@
-import array from "./scrapingData/amazonScrap.js"; 
+import array from "./amazonScrap.js"; 
 import express from "express";
 import { MongoClient } from "mongodb";
 import cors from "cors"
