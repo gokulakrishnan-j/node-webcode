@@ -14,7 +14,7 @@ await client.connect();
 
 app.use(express.json())
 app.use(cors())
-const PORT = 4000
+const PORT = process.env.PORT
 
 
 
