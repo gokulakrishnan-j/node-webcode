@@ -31,7 +31,7 @@ const result = await client
 
 
 
-app.get('/',async function(request,response){
+app.get('',async function(request,response){
 
     const result = await client
     .db('E-commerce')
