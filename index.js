@@ -19,13 +19,6 @@ const PORT = process.env.PORT
 
 
 
-async function names (){
-
-
-
-    
-}
-
 
 
 app.get('/',async function(request,response){
