@@ -50,7 +50,6 @@ app.get('/product',async function(request,response){
 .collection('product')
 .find({})
 .toArray();
-console.log(result.length)
 response.send(result)
 })
 
