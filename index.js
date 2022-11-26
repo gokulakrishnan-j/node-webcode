@@ -38,7 +38,7 @@ app.get('/',async function(request,response){
     .collection('product')
     .deleteMany() 
 
-    names()
+    await names()
     response.send("done")
     })
 
