@@ -20,10 +20,7 @@ const PORT = process.env.PORT
 
 
 async function names (){
-const result = await client
-.db('E-commerce')
-.collection('product')
-.insertMany(array)
+
 
 
     
@@ -33,12 +30,15 @@ const result = await client
 
 app.get('/',async function(request,response){
 
-    const result = await client
+    const deletes = await client
     .db('E-commerce')
     .collection('product')
     .deleteMany() 
 
-    names()
+   const result = await client
+.db('E-commerce')
+.collection('product')
+.insertMany(array)
     response.send("done")
     })
 
