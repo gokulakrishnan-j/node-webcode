@@ -1,5 +1,5 @@
 import express from 'express'
-import {requested,request,cheerio,auth} from '../index.js'
+import {requested,cheerio,auth} from '../index.js'
 import { resuting } from '../service/produt.service.js'
 
 const Router = express.Router()
