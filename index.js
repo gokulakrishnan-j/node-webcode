@@ -102,4 +102,4 @@ app.use("/user",userRouter)
 
 app.listen(PORT)
 
-export {jwt,genHashedPassword,client,requested,request,cheerio,auth,bcrypt,array}
+export {jwt,genHashedPassword,client,requested,cheerio,auth,bcrypt,array}
