@@ -1,69 +1,101 @@
-import array from "./scrapingData/amazonScrap.js"; 
 import express from "express";
 import { MongoClient } from "mongodb";
 import cors from "cors"
 import * as dotenv from "dotenv"
+import request from "request";
+import cheerio from "cheerio";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+import { auth } from "./auth/auth.js";
+import productRouter from './routes/product.route.js'
+import userRouter from './routes/user.route.js'
 
 dotenv.config();
 const app =express();
+const requested =request
 
 const MONGO_URL=process.env.MONGO_URL;
 const client = new MongoClient(MONGO_URL)
 await client.connect();
 
 
+async function genHashedPassword (password){
+    const NO_OF_ROUND = 10
+    const salt = await bcrypt.genSalt(NO_OF_ROUND)
+    const hashed_password =await bcrypt.hash(password,salt)
+    return hashed_password
+    }
+
 app.use(express.json())
 app.use(cors())
-const PORT = 4000
+const PORT = process.env.PORT
+
+
+const array = []
+
+request('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',(err,response,html)=>{
+
+    const $= cheerio.load(html)
 
 
 
+    $('.sg-col-4-of-20') 
+    .each((i,ell)=>{
+        const image = $(ell)
+        .find('img')
+        .attr('src')
 
-async function names (){
-const result = await client
-.db('E-commerce')
-.collection('product')
-.insertMany(array)
+        const title= $(ell)
+        .find('.a-text-normal')
+        .text()
+
+        const rating = $(ell)
+        .find('.a-icon-alt')
+        .text()
+
+        const price = $(ell)
+        .find('.a-price-whole')
+        .text()
+
+        const offerPrice = $(ell)
+        .find('.a-offscreen')
+        .text()
+
+        array.push({
+            image,
+            title,
+            rating,
+            price,
+            offerPrice
+        })
+        
+    })
+  
+})
 
 
-    
-}
+app.get('/',auth,async function(request,response){
 
 
 
-app.get('/',async function(request,response){
-
-    const result = await client
+    const deleting = await client
     .db('E-commerce')
     .collection('product')
     .deleteMany() 
 
-    names()
+    const result = await client
+    .db('E-commerce')
+    .collection('product')
+    .insertMany(array)
+    
     response.send("done")
     })
 
 
-app.get('/product',async function(request,response){
-    
- const result = await client
-.db('E-commerce')
-.collection('product')
-.find({})
-.toArray();
-console.log(result.length)
-response.send(result)
-})
-
-app.get("/product/:name",async function(request,response){
-const {name}=request.params
-    const search = await client
-    .db('E-commerce')
-    .collection('product')
-    .find({title:{$regex:name.replace(/yes/g,'')}})
-    .toArray()
-   search ? response.send(search) : response.status(400).send(`product not available:${name}`)
-})
+app.use("/product",productRouter)
+app.use("/user",userRouter)
 
 
+app.listen(PORT)
 
-app.listen(PORT,console.log(`the server start in:${PORT}`))
+export {jwt,genHashedPassword,client,requested,request,cheerio,auth,bcrypt,array}
