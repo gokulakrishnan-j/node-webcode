@@ -1,6 +1,9 @@
 import express from 'express'
-import {requested,cheerio,auth} from '../index.js'
+import {auth} from '../index.js'
 import { resuting } from '../service/produt.service.js'
+import request from "request";
+import cheerio from "cheerio";
+let requested = request
 
 const Router = express.Router()
 
