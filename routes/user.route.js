@@ -1,6 +1,8 @@
 import express from 'express'
 import {jwt,auth,genHashedPassword,bcrypt} from '../index.js'
 import { users, getingUser, storeUser, userToken, logout  } from '../service/user.service.js'
+import * as dotenv from "dotenv"
+dotenv.config()
 
 const Router = express.Router()
 
@@ -67,7 +69,7 @@ async function createUser(userDetails){
         const isPasswordMatch= await bcrypt.compare(password,storedDBPassword)
 
         if(isPasswordMatch){
-            const token = jwt.sign({id:userFromDB._id},process.env.SECRET_KEY)
+            const token = jwt.sign({id:userFromDB._id},process.env.SECERET_KEY
 
             const storeTokenInDB = await storeUser(userFromDB, token)
             response.send({message : "successful login",
