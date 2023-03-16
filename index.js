@@ -41,7 +41,7 @@ async function homes(){
     .collection('product')
     .deleteMany() 
 
-    if(deletes){
+    
 
     const result = await client
     .db('E-commerce')
@@ -50,7 +50,7 @@ async function homes(){
    
     return result
     
-    }
+    
 }
 
 
