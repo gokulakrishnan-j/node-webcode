@@ -7,7 +7,7 @@ export const auth = (request,response,next)=>{
         
         const token = request.header("my_token");
         
-        jwt.verify(token,process.env.SECERET_KEY);
+        jwt.verify(token,process.env.SECRET_KEY);
         
         next();
     }catch (err) {
