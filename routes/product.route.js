@@ -26,14 +26,14 @@ Router.get("/:name",auth,async function(request,response){
 
  const searchedData = []
 
- requested(`https://www.amazon.in/s?k=${name}&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent`,(err,response,html)=>{
+ requested(`https://www.amazon.in/s?k=${name}&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent`,async(err,response,html)=>{
    
      const $= cheerio.load(html)
  
  
  
      $('.sg-col-4-of-20') 
-     .each((i,ell)=>{
+     .each(async(i,ell)=>{
          const image = $(ell)
          .find('img')
          .attr('src')
@@ -54,7 +54,7 @@ Router.get("/:name",auth,async function(request,response){
          .find('.a-offscreen')
          .text()
  
-         searchedData.push({
+        await searchedData.push({
              image,
              title,
              rating,
@@ -64,7 +64,7 @@ Router.get("/:name",auth,async function(request,response){
          
         
      })
-     hi(searchedData)
+    await hi(searchedData)
  })
 
  function hi(d){
