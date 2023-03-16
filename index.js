@@ -34,13 +34,38 @@ const PORT = process.env.PORT
 
 const array = []
 
-request('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',(err,response,html)=>{
+async function homes(){
+    
+    const deletes = await client
+    .db('E-commerce')
+    .collection('product')
+    .deleteMany() 
+
+    if(deletes){
+
+    const result = await client
+    .db('E-commerce')
+    .collection('product')
+    .insertMany(array)
+   
+    return result
+    
+    }
+}
+
+
+
+app.get('/',async function(request,response){
+
+    var res = response
+
+    requested('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',(err,response,html)=>{
 
     const $= cheerio.load(html)
 
 
     $('.sg-col-4-of-20') 
-    .each((i,ell)=>{
+    .each(async(i,ell)=>{
         const image = $(ell)
         .find('img')
         .attr('src')
@@ -69,35 +94,21 @@ request('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&r
             offerPrice
         })
         
+        
     })
-  
+    if(homes()){
+        res.send("done")
+    }
 })
 
 
 
-
-
-app.get('/',async function(request,response){
-
-    const deletes = await client
-    .db('E-commerce')
-    .collection('product')
-    .deleteMany() 
-
-    const result = await client
-    .db('E-commerce')
-    .collection('product')
-    .insertMany(array)
     
-
-    response.send("done")
     })
 
 
 app.use("/product",productRouter)
 app.use("/user",userRouter)
-
-
 
 
 app.listen(PORT)
