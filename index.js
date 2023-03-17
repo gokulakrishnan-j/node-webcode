@@ -35,16 +35,6 @@ const PORT = process.env.PORT
 
 
 
-
-app.get('/',async function(request,response){
-
- 
-
-
-    
-    })
-
-
 app.use("/product",productRouter)
 app.use("/user",userRouter)
 
