@@ -32,80 +32,13 @@ const PORT = process.env.PORT
 
 
 
-const array = []
 
-async function homes(){
-    
-    const deletes = await client
-    .db('E-commerce')
-    .collection('product')
-    .deleteMany() 
-   
-
-    
-   
-    return "done"
-    
-    
-}
 
 
 
 app.get('/',async function(request,response){
 
-    var res = response
-
-    requested('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',async(err,response,html)=>{
-
-    const $= cheerio.load(html)
-
-
-    $('.sg-col-4-of-20') 
-    .each(async(i,ell)=>{
-        const image = $(ell)
-        .find('img')
-        .attr('src')
-
-        const title= $(ell)
-        .find('.a-text-normal')
-        .text()
-
-        const rating = $(ell)
-        .find('.a-icon-alt')
-        .text()
-
-        const price = $(ell)
-        .find('.a-price-whole')
-        .text()
-
-        const offerPrice = $(ell)
-        .find('.a-offscreen')
-        .text()
-
-        array.push({
-            image,
-            title,
-            rating,
-            price,
-            offerPrice
-        })
-        
-        
-    })
-    var results = await homes()
-    
-if(results){
-    var result = await client
-    .db('E-commerce')
-    .collection('product')
-    .insertMany(array)
-}
-   
-    if(result){
-        res.send("done")
-    }
-})
-
+ 
 
 
     
@@ -118,4 +51,4 @@ app.use("/user",userRouter)
 
 app.listen(PORT)
 
-export {jwt,genHashedPassword,client,requested,cheerio,auth,bcrypt,array}
+export {jwt,genHashedPassword,client,requested,cheerio,auth,bcrypt}
