@@ -40,15 +40,11 @@ async function homes(){
     .db('E-commerce')
     .collection('product')
     .deleteMany() 
+   
 
     
-
-    const result = await client
-    .db('E-commerce')
-    .collection('product')
-    .insertMany(array)
    
-    return result
+    return "done"
     
     
 }
@@ -59,7 +55,7 @@ app.get('/',async function(request,response){
 
     var res = response
 
-    requested('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',(err,response,html)=>{
+    requested('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',async(err,response,html)=>{
 
     const $= cheerio.load(html)
 
@@ -96,7 +92,16 @@ app.get('/',async function(request,response){
         
         
     })
-    if(homes()){
+    var results = await homes()
+    
+if(results){
+    var result = await client
+    .db('E-commerce')
+    .collection('product')
+    .insertMany(array)
+}
+   
+    if(result){
         res.send("done")
     }
 })
