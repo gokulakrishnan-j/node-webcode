@@ -9,7 +9,7 @@ const Router = express.Router()
 
 Router.get('/',auth,async function(request,response){
     
-    const array = []
+    
 
     var res = response
 
@@ -17,7 +17,7 @@ Router.get('/',auth,async function(request,response){
 
     const $= cheerio.load(html)
 
-
+    const array = []
     $('.sg-col-4-of-20') 
     .each(async(i,ell)=>{
         const image = $(ell)
@@ -50,13 +50,10 @@ Router.get('/',auth,async function(request,response){
         
         
     })
- await value(array)
+ res.send(array)
     
 })
 
-function value(result){
-    response.send(result)
-}
 
 
 })
@@ -64,6 +61,7 @@ function value(result){
 Router.get("/:name",auth,async function(request,response){
  const {name}=request.params
 
+ let res = response
 
  const searchedData = []
 
@@ -105,12 +103,10 @@ Router.get("/:name",auth,async function(request,response){
          
         
      })
-     await hi(searchedData)
+     res.send(searchedData)
  })
 
- function hi(d){
-    response.send(d)
- }
+
 
 })
 
