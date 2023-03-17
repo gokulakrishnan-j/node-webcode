@@ -1,23 +1,64 @@
 import express from 'express'
 import {auth} from '../index.js'
-import { resuting } from '../service/produt.service.js'
 import request from "request";
 import cheerio from "cheerio";
 let requested = request
-
 const Router = express.Router()
-
-
 
 
 
 Router.get('/',auth,async function(request,response){
     
-   
+    const array = []
 
- const result = await resuting();
+    var res = response
 
-response.send(result)
+    requested('https://www.amazon.in/s?k=all&crid=3KH4GE89Z7E0Q&sprefix=%2Caps%2C484&ref=nb_sb_ss_recent_1_0_recent',async(err,response,html)=>{
+
+    const $= cheerio.load(html)
+
+
+    $('.sg-col-4-of-20') 
+    .each(async(i,ell)=>{
+        const image = $(ell)
+        .find('img')
+        .attr('src')
+
+        const title= $(ell)
+        .find('.a-text-normal')
+        .text()
+
+        const rating = $(ell)
+        .find('.a-icon-alt')
+        .text()
+
+        const price = $(ell)
+        .find('.a-price-whole')
+        .text()
+
+        const offerPrice = $(ell)
+        .find('.a-offscreen')
+        .text()
+
+       await array.push({
+            image,
+            title,
+            rating,
+            price,
+            offerPrice
+        })
+        
+        
+    })
+ await value(array)
+    
+})
+
+function value(result){
+    response.send(result)
+}
+
+
 })
 
 Router.get("/:name",auth,async function(request,response){
@@ -64,7 +105,7 @@ Router.get("/:name",auth,async function(request,response){
          
         
      })
-    await hi(searchedData)
+     await hi(searchedData)
  })
 
  function hi(d){
