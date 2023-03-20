@@ -34,7 +34,6 @@ const PORT = process.env.PORT
 
 
 
-
 app.use("/product",productRouter)
 app.use("/user",userRouter)
 
